@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color: #17140f;
+  background: #f4ecdc;
+  font-family: "Avenir Next", "Segoe UI", sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  --display-font: "Fraunces", "Iowan Old Style", Georgia, serif;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 15% 12%, rgba(201, 146, 53, 0.3), transparent 26rem),
+    radial-gradient(circle at 85% 8%, rgba(31, 111, 120, 0.23), transparent 24rem),
+    linear-gradient(135deg, #f7eedc 0%, #efe1c8 52%, #e8d3b1 100%);
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+.display-font {
+  font-family: var(--display-font);
+}
+
+.glass-panel {
+  border: 1px solid rgba(23, 20, 15, 0.12);
+  background: rgba(255, 250, 239, 0.72);
+  box-shadow: 0 24px 80px rgba(42, 30, 18, 0.16);
+  backdrop-filter: blur(18px);
+}
+
+.field {
+  width: 100%;
+  border-radius: 1.1rem;
+  border: 1px solid rgba(23, 20, 15, 0.15);
+  background: rgba(255, 255, 255, 0.62);
+  padding: 0.85rem 1rem;
+  color: #17140f;
+  outline: none;
+}
+
+.field:focus {
+  border-color: rgba(184, 95, 63, 0.8);
+  box-shadow: 0 0 0 4px rgba(184, 95, 63, 0.14);
+}
+

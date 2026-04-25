@@ -1,0 +1,113 @@
+[project]
+name = "xpotify-downloader"
+version = "0.1.0"
+requires-python = ">=3.10,<3.14"
+
+description = "Local media manager with a spotDL-backed audio workflow and modular providers"
+authors = [{ name = "Xpotify Maintainers" }]
+readme = "README.md"
+license = "MIT"
+
+maintainers = [{ name = "Xpotify Maintainers" }]
+
+keywords = [
+    "spotify",
+    "downloader",
+    "media-manager",
+    "music",
+    "video",
+]
+classifiers = [
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Multimedia",
+    "Topic :: Multimedia :: Sound/Audio",
+    "Topic :: Utilities",
+]
+dependencies = [
+    "spotipy>=2.24.0,<3",
+    "ytmusicapi>=1.11.1,<2",
+    "pytube>=15.0.0,<16",
+    "yt-dlp>=2025.09.26,<2027",
+    "mutagen>=1.47.0,<2",
+    "rich>=13.9.4,<14",
+    "beautifulsoup4>=4.12.3,<5",
+    "requests>=2.32.3,<3",
+    "rapidfuzz>=3.10.1,<4",
+    "python-slugify[unidecode]>=8.0.4,<9",
+    "uvicorn>=0.23.2,<0.24",
+    "pydantic>=2.9.2,<3",
+    "fastapi>=0.103.0,<0.104",
+    "platformdirs>=4.3.6,<5",
+    "pykakasi>=2.3.0,<3",
+    "syncedlyrics>=1.0.1,<2",
+    "soundcloud-v2>=1.6.0,<2",
+    "websockets~=14.1",
+]
+
+[project.urls]
+Homepage = "https://github.com/miladtm94/Xpotify-downloader/"
+Repository = "https://github.com/miladtm94/Xpotify-downloader.git"
+Documentation = "https://github.com/miladtm94/Xpotify-downloader/tree/main/docs"
+
+[project.scripts]
+spotdl = "spotdl:console_entry_point"
+xpotify-api = "app.backend.main:run"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3.3,<9",
+    "httpx>=0.24,<0.25",
+    "pytest-mock>=3.14.0,<4",
+    "pyfakefs>=5.7.1,<6",
+    "pytest-cov>=6.0.0,<7",
+    "pytest-subprocess>=1.5.2,<2",
+    "pytest-asyncio>=0.21.1,<0.22",
+    "mypy>=1.13.0,<2",
+    "pylint>=3.3.1,<4",
+    "black>=24.10.0,<25",
+    "mdformat-gfm>=0.3.5,<0.4",
+    "types-orjson>=3.6.2,<4",
+    "types-python-slugify>=8.0.2.20240310,<9",
+    "types-requests==2.31.0.6",
+    "types-setuptools>=75.5.0.20241116,<76",
+    "types-toml>=0.10.8.7,<0.11",
+    "types-ujson>=5.10.0.20240515,<6",
+    "mkdocs>=1.6.1,<2",
+    "isort>=5.13.2,<6",
+    "dill>=0.3.7,<0.4",
+    "mkdocs-material>=9.5.44,<10",
+    "pymdown-extensions~=10.12",
+    "vcrpy>=6.0.2,<7",
+    "pytest-recording>=0.13.1,<0.14",
+    "types-deprecated>=1.2.15.20250304",
+    "types-pyyaml>=6.0.12.20250809",
+    "types-python-dateutil>=2.9.0.20250809",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["app", "spotdl"]
+
+[tool.isort]
+profile = "black"
+
+[tool.pylint.format]
+limit-inference-results = 0
+fail-under = 9
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+markers = [
+    "vcr",
+]

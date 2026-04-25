@@ -1,0 +1,51 @@
+site_name: Xpotify Local Media Manager
+site_description: Local media manager with a spotDL-backed audio workflow and modular providers
+site_author: Xpotify Maintainers
+site_url: "https://github.com/miladtm94/Xpotify-downloader"
+repo_url: "https://github.com/miladtm94/Xpotify-downloader"
+repo_name: "miladtm94/Xpotify-downloader"
+site_dir: "site"
+
+nav:
+- Home: index.md
+- Architecture: ARCHITECTURE.md
+- Development: DEVELOPMENT.md
+- Legal and Usage: LEGAL_AND_USAGE.md
+- Project Audit: PROJECT_AUDIT.md
+- Archive Notes: archive-notes.md
+
+theme:
+  name: material
+  features:
+  - content.code.annotate
+  - navigation.tabs
+  - navigation.top
+  - toc.integrate
+  palette:
+  - media: "(prefers-color-scheme: light)"
+    scheme: default
+    primary: brown
+    accent: amber
+  - media: "(prefers-color-scheme: dark)"
+    scheme: slate
+    primary: brown
+    accent: amber
+
+plugins:
+- search
+
+markdown_extensions:
+- admonition
+- pymdownx.details
+- pymdownx.superfences
+- pymdownx.tabbed:
+    alternate_style: true
+- pymdownx.highlight:
+    use_pygments: true
+    pygments_lang_class: true
+- toc:
+    permalink: true
+
+watch:
+- app
+- spotdl
