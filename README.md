@@ -9,6 +9,8 @@ a React frontend, and a provider architecture for future lawful media sources.
 - Accepts Spotify links for the existing spotDL metadata and audio-matching workflow.
 - Accepts direct public audio/video file URLs such as `.mp3`, `.m4a`, `.flac`,
   `.wav`, `.ogg`, `.opus`, `.mp4`, `.webm`, and `.mov`.
+- Accepts public platform video URLs through `yt-dlp` when the media is
+  accessible without login, cookies, DRM bypass, or private-content access.
 - Validates links before jobs run.
 - Tracks jobs through queued, validating, fetching metadata, downloading,
   post-processing, completed, failed, and cancelled states.
@@ -21,18 +23,15 @@ a React frontend, and a provider architecture for future lawful media sources.
 - It does not download audio directly from Spotify.
 - It does not bypass DRM, paywalls, private-content controls, account logins, or
   anti-bot protections.
-- It does not extract cookies, scrape private content, or claim support for
-  unsupported platforms.
+- It does not extract cookies or scrape private content.
 - It does not currently ship a desktop wrapper. Tauri can be evaluated after the
   web backend and frontend stabilize.
 
 ## Lawful Use
 
 Use this project only with media you own, have permission to download, or can
-lawfully access. Direct media URL support is intended for public files where
-downloading is permitted. Platform URLs such as X/Twitter are recognized only so
-the app can return a clear unsupported-source message until a lawful provider is
-intentionally added.
+lawfully access. Direct media and platform URL support is intended only for
+public media where downloading is permitted.
 
 ## Supported Providers
 
@@ -40,7 +39,7 @@ intentionally added.
 | --- | --- | --- | --- |
 | spotDL | Preserved core workflow | Spotify track, album, playlist, artist links | Spotify is used for metadata; audio is matched through spotDL's configured providers. |
 | Direct media | Enabled | Public direct media files | Supports common audio/video file extensions without platform scraping. |
-| Video platform | Placeholder | Public video platform URLs | Recognizes some sources but returns unsupported until a lawful backend is enabled. |
+| Video platform | Enabled with limits | Public YouTube, X/Twitter, Vimeo, TikTok URLs supported by yt-dlp | No cookies, login-gated media, DRM bypass, private scraping, or anti-bot circumvention. |
 
 ## Installation
 
@@ -105,7 +104,8 @@ npm run build
 ## Troubleshooting
 
 - `FFmpeg was not found`: install FFmpeg and ensure it is on `PATH`.
-- `Unsupported link`: use a Spotify URL or a direct public media file URL.
+- `Unsupported link`: use a Spotify URL, direct public media file URL, or
+  public platform video URL supported by yt-dlp.
 - `Spotify metadata failed`: check network access, provider availability, and
   any Spotify API/rate-limit issues.
 - `uv: command not found`: install uv with `python -m pip install uv`.
@@ -116,4 +116,3 @@ npm run build
 Xpotify is derived from and preserves substantial functionality from
 [spotDL](https://github.com/spotDL/spotify-downloader), licensed under the MIT
 License. The original MIT license notice is retained in `LICENSE`.
-

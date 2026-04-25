@@ -105,3 +105,8 @@ export type SettingsResponse = {
   dependencies: DependencyStatus[];
 };
 
+export type FolderSelectionResponse = {
+  selected: boolean;
+  path?: string | null;
+  message: string;
+};

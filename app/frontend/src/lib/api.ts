@@ -2,6 +2,7 @@ import type {
   AppSettings,
   DownloadJob,
   DownloadOptions,
+  FolderSelectionResponse,
   ProviderCapability,
   SettingsResponse,
   ValidationResult,
@@ -75,7 +76,12 @@ export function updateSettings(settings: AppSettings): Promise<SettingsResponse>
   });
 }
 
+export function selectOutputDirectory(): Promise<FolderSelectionResponse> {
+  return request<FolderSelectionResponse>("/api/settings/select-output-directory", {
+    method: "POST",
+  });
+}
+
 export function getProviders(): Promise<ProviderCapability[]> {
   return request<ProviderCapability[]>("/api/providers");
 }
-

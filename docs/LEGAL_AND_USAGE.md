@@ -33,6 +33,12 @@ files, such as:
 
 The app does not use account cookies or scrape private files.
 
+## Public Platform Videos
+
+The video provider uses yt-dlp for public platform URLs such as YouTube,
+X/Twitter, Vimeo, and TikTok when the media can be accessed normally without
+credentials or circumvention. Provider availability can vary as platforms change.
+
 ## Unsupported Sources
 
 The app intentionally does not support:
@@ -44,11 +50,7 @@ The app intentionally does not support:
 - Anti-bot circumvention
 - Claims of broad platform support without a lawful provider
 
-Platform URLs such as X/Twitter may be recognized only to return a clear
-unsupported-source response.
-
 ## Attribution
 
 Xpotify is derived from spotDL and keeps the original MIT license notice in
 `LICENSE`.
-

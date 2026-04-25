@@ -1,6 +1,6 @@
 import { FormEvent, useState } from "react";
 
-import { createDownload, validateDownload } from "../lib/api";
+import { createDownload, selectOutputDirectory, validateDownload } from "../lib/api";
 import type { AppSettings, DownloadJob, ValidationResult } from "../lib/types";
 
 type DownloadPageProps = {
@@ -17,6 +17,7 @@ export function DownloadPage({ settings, onJobCreated }: DownloadPageProps) {
   const [validation, setValidation] = useState<ValidationResult | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [folderMessage, setFolderMessage] = useState<string | null>(null);
 
   async function handleValidate() {
     if (!url.trim()) {
@@ -26,7 +27,17 @@ export function DownloadPage({ settings, onJobCreated }: DownloadPageProps) {
     setBusy(true);
     setError(null);
     try {
-      setValidation(await validateDownload(url.trim()));
+      const result = await validateDownload(url.trim());
+      setValidation(result);
+      if (result.ok && result.source_type === "video") {
+        setMediaMode("video");
+        setFormat(result.supported_formats.includes("mp4") ? "mp4" : result.supported_formats[0] ?? "mp4");
+        setQuality(result.supported_qualities.includes("best") ? "best" : result.supported_qualities[0] ?? "best");
+      }
+      if (result.ok && (result.source_type === "audio" || result.source_type === "spotify_metadata")) {
+        setMediaMode("audio");
+        setFormat(result.supported_formats.includes("mp3") ? "mp3" : result.supported_formats[0] ?? "mp3");
+      }
     } catch (exc) {
       setError(exc instanceof Error ? exc.message : "Validation failed");
     } finally {
@@ -50,6 +61,23 @@ export function DownloadPage({ settings, onJobCreated }: DownloadPageProps) {
       setValidation(null);
     } catch (exc) {
       setError(exc instanceof Error ? exc.message : "Could not start download");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function handleChooseFolder() {
+    setBusy(true);
+    setError(null);
+    setFolderMessage(null);
+    try {
+      const response = await selectOutputDirectory();
+      setFolderMessage(response.message);
+      if (response.selected && response.path) {
+        setOutputDirectory(response.path);
+      }
+    } catch (exc) {
+      setError(exc instanceof Error ? exc.message : "Could not open folder picker");
     } finally {
       setBusy(false);
     }
@@ -118,15 +146,25 @@ export function DownloadPage({ settings, onJobCreated }: DownloadPageProps) {
             <span className="mb-2 block text-sm font-semibold">
               Output folder
               <span className="ml-2 font-normal text-ink/50">
-                Browser builds use a typed path; desktop folder picking can come later.
+                Choose a local folder or type a path manually.
               </span>
             </span>
-            <input
-              className="field"
-              onChange={(event) => setOutputDirectory(event.target.value)}
-              placeholder="~/Music/Xpotify"
-              value={outputDirectory}
-            />
+            <div className="flex flex-col gap-3 md:flex-row">
+              <input
+                className="field"
+                onChange={(event) => setOutputDirectory(event.target.value)}
+                placeholder="~/Music/Xpotify"
+                value={outputDirectory}
+              />
+              <button
+                className="rounded-[1.1rem] border border-ink/15 px-5 py-3 text-sm font-semibold text-ink transition hover:bg-ink/5 disabled:cursor-not-allowed disabled:opacity-55"
+                disabled={busy}
+                onClick={handleChooseFolder}
+                type="button"
+              >
+                Choose folder
+              </button>
+            </div>
           </label>
         </div>
 
@@ -142,6 +180,11 @@ export function DownloadPage({ settings, onJobCreated }: DownloadPageProps) {
         {error ? (
           <div className="mt-5 rounded-[1.4rem] bg-clay/10 px-4 py-3 text-sm text-clay">
             {error}
+          </div>
+        ) : null}
+        {folderMessage ? (
+          <div className="mt-5 rounded-[1.4rem] bg-tide/10 px-4 py-3 text-sm text-tide">
+            {folderMessage}
           </div>
         ) : null}
 
@@ -170,10 +213,9 @@ export function DownloadPage({ settings, onJobCreated }: DownloadPageProps) {
         <div className="mt-5 space-y-3 text-sm text-ink/70">
           <p>Spotify links are metadata inputs. spotDL matches audio through configured external providers.</p>
           <p>Direct media URLs are downloaded only when they point to public media files.</p>
-          <p>Platform URLs like X/Twitter are recognized but blocked until a lawful provider is enabled.</p>
+          <p>Public platform URLs such as YouTube or X are handled by yt-dlp when no login, cookies, DRM bypass, or private access is required.</p>
         </div>
       </aside>
     </section>
   );
 }
-

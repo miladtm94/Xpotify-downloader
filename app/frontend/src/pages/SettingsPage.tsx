@@ -1,6 +1,6 @@
 import { FormEvent, useEffect, useState } from "react";
 
-import { getSettings, updateSettings } from "../lib/api";
+import { getSettings, selectOutputDirectory, updateSettings } from "../lib/api";
 import type { AppSettings, DependencyStatus } from "../lib/types";
 
 type SettingsPageProps = {
@@ -37,6 +37,14 @@ export function SettingsPage({ settings, onSettingsChange }: SettingsPageProps) 
     setMessage("Settings saved.");
   }
 
+  async function handleChooseFolder() {
+    const response = await selectOutputDirectory();
+    setMessage(response.message);
+    if (response.selected && response.path && draft) {
+      setDraft({ ...draft, output_directory: response.path });
+    }
+  }
+
   if (!draft) {
     return <div className="glass-panel rounded-[2rem] p-8">Loading settings...</div>;
   }
@@ -49,11 +57,20 @@ export function SettingsPage({ settings, onSettingsChange }: SettingsPageProps) 
         <div className="mt-7 grid gap-4">
           <label>
             <span className="mb-2 block text-sm font-semibold">Default output folder</span>
-            <input
-              className="field"
-              onChange={(event) => setDraft({ ...draft, output_directory: event.target.value })}
-              value={draft.output_directory}
-            />
+            <div className="flex flex-col gap-3 md:flex-row">
+              <input
+                className="field"
+                onChange={(event) => setDraft({ ...draft, output_directory: event.target.value })}
+                value={draft.output_directory}
+              />
+              <button
+                className="rounded-[1.1rem] border border-ink/15 px-5 py-3 text-sm font-semibold text-ink transition hover:bg-ink/5"
+                onClick={handleChooseFolder}
+                type="button"
+              >
+                Choose folder
+              </button>
+            </div>
           </label>
           <div className="grid gap-4 md:grid-cols-2">
             <label>
@@ -152,4 +169,3 @@ export function SettingsPage({ settings, onSettingsChange }: SettingsPageProps) 
     </section>
   );
 }
-

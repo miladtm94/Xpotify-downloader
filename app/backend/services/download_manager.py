@@ -18,7 +18,12 @@ from app.backend.models.download_result import (
     ValidationResult,
 )
 from app.backend.models.settings import AppSettings
-from app.backend.providers import DirectMediaProvider, DownloadProvider, SpotDLProvider, VideoProvider
+from app.backend.providers import (
+    DirectMediaProvider,
+    DownloadProvider,
+    SpotDLProvider,
+    VideoProvider,
+)
 from app.backend.providers.base import ProviderError
 from app.backend.services.job_queue import JobQueue
 from app.backend.services.metadata_service import MetadataService
@@ -46,7 +51,7 @@ class DownloadManager:
         return [
             SpotDLProvider(self.settings),
             DirectMediaProvider(self.settings),
-            VideoProvider(),
+            VideoProvider(self.settings),
         ]
 
     def update_settings(self, settings: AppSettings) -> None:
@@ -97,6 +102,7 @@ class DownloadManager:
             provider=provider.name,
             options=options or DownloadOptions(),
         )
+        job.set_progress(1, "Queued for download")
         self.jobs[job.id] = job
         await self._publish(job)
         self.queue.enqueue(job, self._process_job)
@@ -156,7 +162,12 @@ class DownloadManager:
             job.set_progress(max(job.progress, 1))
             await self._publish(job)
 
-            result = await provider.download(job, lambda progress, message: self._update_progress(job, progress, message))
+            result = await provider.download(
+                job,
+                lambda progress, message: self._update_progress(
+                    job, progress, message
+                ),
+            )
             job.result = result
             if not result.success:
                 error = result.error or StructuredError(
@@ -197,4 +208,3 @@ class DownloadManager:
     async def _publish(self, job: DownloadJob) -> None:
         for subscriber in list(self._subscribers):
             await subscriber.put(job.model_copy(deep=True))
-

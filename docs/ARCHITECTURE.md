@@ -73,8 +73,8 @@ Current providers:
 - `SpotDLProvider`: wraps the existing spotDL workflow. Spotify is metadata-only;
   audio matching is handled by spotDL's configured providers.
 - `DirectMediaProvider`: downloads direct public media files by extension.
-- `VideoProvider`: placeholder for future lawful public video support. It
-  returns clear unsupported/provider-not-enabled messages today.
+- `VideoProvider`: uses yt-dlp for public platform videos when no login, cookies,
+  DRM bypass, private-content scraping, or anti-bot circumvention is required.
 
 ## Frontend
 
@@ -85,4 +85,3 @@ and receives job updates over WebSocket.
 Desktop packaging is intentionally deferred. Once the web app is stable, Tauri
 can provide native folder picking and open-file/open-folder actions without
 rewriting the backend.
-

@@ -43,6 +43,13 @@ export default function App() {
   }, [refreshJobs]);
 
   useEffect(() => {
+    const interval = window.setInterval(() => {
+      refreshJobs();
+    }, 2000);
+    return () => window.clearInterval(interval);
+  }, [refreshJobs]);
+
+  useEffect(() => {
     const socket = new WebSocket(updatesWebSocketUrl());
     socket.onmessage = (event) => {
       const job = JSON.parse(event.data) as DownloadJob;
@@ -83,4 +90,3 @@ export default function App() {
     </Shell>
   );
 }
-

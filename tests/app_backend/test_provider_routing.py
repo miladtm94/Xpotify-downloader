@@ -16,12 +16,12 @@ async def test_direct_media_provider_validates_direct_audio_url():
 
 
 @pytest.mark.asyncio
-async def test_video_provider_recognizes_but_blocks_platform_urls():
-    provider = VideoProvider()
+async def test_video_provider_accepts_public_platform_urls():
+    provider = VideoProvider(AppSettings())
     result = await provider.validate("https://x.com/example/status/123")
-    assert result.ok is False
-    assert result.error is not None
-    assert result.error.code == "provider_not_enabled"
+    assert result.ok is True
+    assert result.provider == "video_platform"
+    assert result.source_type == "video"
 
 
 @pytest.mark.asyncio
@@ -33,10 +33,17 @@ async def test_download_manager_routes_to_direct_provider():
 
 
 @pytest.mark.asyncio
+async def test_download_manager_routes_to_platform_video_provider():
+    manager = DownloadManager(settings=AppSettings())
+    result = await manager.validate_url("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
+    assert result.ok is True
+    assert result.provider == "video_platform"
+
+
+@pytest.mark.asyncio
 async def test_download_manager_returns_unsupported_for_unknown_url():
     manager = DownloadManager(settings=AppSettings())
     result = await manager.validate_url("notaurl")
     assert result.ok is False
     assert result.error is not None
     assert result.error.code == "unsupported_source"
-
