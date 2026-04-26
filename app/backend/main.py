@@ -20,7 +20,7 @@ def create_app(
 ) -> FastAPI:
     configure_logging()
     api = FastAPI(
-        title="Xpotify Local Media Manager",
+        title="LynkOo",
         description="Local media manager with spotDL-backed audio and modular providers.",
         version="0.1.0",
     )
@@ -48,4 +48,3 @@ app = create_app()
 
 def run() -> None:
     uvicorn.run("app.backend.main:app", host="127.0.0.1", port=8800, reload=False)
-

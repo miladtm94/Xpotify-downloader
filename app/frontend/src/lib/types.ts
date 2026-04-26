@@ -26,8 +26,20 @@ export type MediaMetadata = {
   raw?: Record<string, unknown>;
 };
 
+export type AvailableQuality = {
+  id: string;
+  label: string;
+  detail?: string | null;
+  height?: number | null;
+  fps?: number | null;
+  extension?: string | null;
+  video_codec?: string | null;
+  estimated_bytes?: number | null;
+};
+
 export type DownloadOptions = {
   output_directory?: string | null;
+  output_subfolder?: string | null;
   media_mode: "auto" | "audio" | "video";
   format?: string | null;
   quality?: string | null;
@@ -66,6 +78,7 @@ export type ValidationResult = {
   message: string;
   supported_formats: string[];
   supported_qualities: string[];
+  metadata?: MediaMetadata | null;
   error?: StructuredError | null;
 };
 
@@ -86,10 +99,7 @@ export type AppSettings = {
   default_audio_format: string;
   default_video_format: string;
   default_quality: string;
-  max_concurrent_downloads: number;
   theme: "system" | "light" | "dark";
-  spotify_client_id?: string | null;
-  spotify_client_secret?: string | null;
 };
 
 export type DependencyStatus = {
@@ -108,5 +118,11 @@ export type SettingsResponse = {
 export type FolderSelectionResponse = {
   selected: boolean;
   path?: string | null;
+  message: string;
+};
+
+export type OpenFolderResponse = {
+  opened: boolean;
+  path: string;
   message: string;
 };

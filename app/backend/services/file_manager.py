@@ -14,15 +14,26 @@ class FileManager:
     def __init__(self, settings: AppSettings):
         self.settings = settings
 
-    def output_directory(self, override: Path | None = None) -> Path:
-        directory = (override or self.settings.output_directory).expanduser()
+    def output_directory(
+        self,
+        override: Path | None = None,
+        subfolder: str | None = None,
+    ) -> Path:
+        base = override.expanduser() if override else self.settings.output_directory
+        if override and not base.is_absolute():
+            base = self.settings.output_directory / base
+        directory = self._append_subfolder(base, subfolder)
         directory.mkdir(parents=True, exist_ok=True)
         return directory.resolve()
 
     def available_path(
-        self, filename: str, extension: str, output_directory: Path | None = None
+        self,
+        filename: str,
+        extension: str,
+        output_directory: Path | None = None,
+        output_subfolder: str | None = None,
     ) -> Path:
-        directory = self.output_directory(output_directory)
+        directory = self.output_directory(output_directory, output_subfolder)
         clean_stem = sanitize_filename(Path(filename).stem)
         clean_extension = extension.lower().lstrip(".")
         candidate = directory / f"{clean_stem}.{clean_extension}"
@@ -32,3 +43,13 @@ class FileManager:
             counter += 1
         return candidate
 
+    def _append_subfolder(self, base: Path, subfolder: str | None) -> Path:
+        if not subfolder:
+            return base.expanduser()
+
+        directory = base.expanduser()
+        for part in Path(subfolder).parts:
+            if part in {"", ".", ".."}:
+                continue
+            directory = directory / sanitize_filename(part)
+        return directory

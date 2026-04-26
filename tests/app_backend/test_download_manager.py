@@ -1,7 +1,9 @@
 import asyncio
 
 import pytest
+from fastapi.testclient import TestClient
 
+from app.backend.main import create_app
 from app.backend.models.download_job import DownloadJob, JobState
 from app.backend.models.download_result import (
     DownloadResult,
@@ -70,3 +72,40 @@ async def test_unsupported_job_fails_gracefully():
     assert job.error is not None
     assert job.error.code == "unsupported_source"
 
+
+def test_open_completed_download_folder(monkeypatch, tmp_path):
+    manager = DownloadManager(settings=AppSettings(output_directory=tmp_path), providers=[])
+    job = DownloadJob(url="mock://song")
+    job.transition(JobState.COMPLETED, "Completed")
+    job.result = DownloadResult(
+        job_id=job.id,
+        success=True,
+        file_path=tmp_path / "song.mp3",
+    )
+    (tmp_path / "song.mp3").write_bytes(b"ok")
+    manager.jobs[job.id] = job
+    app = create_app(manager=manager)
+    client = TestClient(app)
+
+    monkeypatch.setattr(
+        "app.backend.api.routes_downloads._open_folder_sync",
+        lambda folder: (True, f"opened {folder}"),
+    )
+
+    response = client.post(f"/api/downloads/{job.id}/open-folder")
+
+    assert response.status_code == 200
+    assert response.json()["opened"] is True
+    assert response.json()["path"] == str(tmp_path)
+
+
+def test_open_folder_rejects_unfinished_job(tmp_path):
+    manager = DownloadManager(settings=AppSettings(output_directory=tmp_path), providers=[])
+    job = DownloadJob(url="mock://song")
+    manager.jobs[job.id] = job
+    app = create_app(manager=manager)
+    client = TestClient(app)
+
+    response = client.post(f"/api/downloads/{job.id}/open-folder")
+
+    assert response.status_code == 400

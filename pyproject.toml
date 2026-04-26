@@ -1,14 +1,14 @@
 [project]
-name = "xpotify-downloader"
+name = "lynkoo"
 version = "0.1.0"
 requires-python = ">=3.10,<3.14"
 
-description = "Local media manager with a spotDL-backed audio workflow and modular providers"
-authors = [{ name = "Xpotify Maintainers" }]
+description = "Local media manager with a spotDL-backed audio workflow and modular public video providers"
+authors = [{ name = "LynkOo Maintainers" }]
 readme = "README.md"
 license = "MIT"
 
-maintainers = [{ name = "Xpotify Maintainers" }]
+maintainers = [{ name = "LynkOo Maintainers" }]
 
 keywords = [
     "spotify",
@@ -53,12 +53,13 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/miladtm94/Xpotify-downloader/"
-Repository = "https://github.com/miladtm94/Xpotify-downloader.git"
-Documentation = "https://github.com/miladtm94/Xpotify-downloader/tree/main/docs"
+Homepage = "https://github.com/miladtm94/LynkOo/"
+Repository = "https://github.com/miladtm94/LynkOo.git"
+Documentation = "https://github.com/miladtm94/LynkOo/tree/main/docs"
 
 [project.scripts]
 spotdl = "spotdl:console_entry_point"
+lynkoo-api = "app.backend.main:run"
 xpotify-api = "app.backend.main:run"
 
 [dependency-groups]

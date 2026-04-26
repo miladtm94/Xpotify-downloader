@@ -1,2 +1,1 @@
-"""Backend package for the Xpotify local media manager."""
-
+"""Backend package for the LynkOo local media manager."""

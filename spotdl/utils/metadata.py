@@ -235,7 +235,8 @@ def embed_metadata(
     elif encoding == "mp3":
         audio_file["tracknumber"] = f"{str(song.track_number)}/{str(song.tracks_count)}"
         audio_file["discnumber"] = f"{str(song.disc_number)}/{str(song.disc_count)}"
-        audio_file["isrc"] = song.isrc
+        if song.isrc:
+            audio_file["isrc"] = song.isrc
 
     # Mp3 specific encoding
     if encoding == "mp3":

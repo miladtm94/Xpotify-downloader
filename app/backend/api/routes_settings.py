@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import asyncio
+import subprocess
+import sys
 from pathlib import Path
 from typing import Optional
 
@@ -43,19 +45,28 @@ def update_settings(
 async def select_output_directory() -> FolderSelectionResponse:
     """Open a native folder picker from the local backend process."""
 
-    return await asyncio.to_thread(_select_output_directory_sync)
+    if sys.platform == "darwin":
+        return await asyncio.to_thread(_select_output_directory_macos)
+    return _select_output_directory_sync()
 
 
 def _select_output_directory_sync() -> FolderSelectionResponse:
+    if sys.platform == "darwin":
+        return _select_output_directory_macos()
+
     try:
         import tkinter as tk
         from tkinter import filedialog
 
-        root = tk.Tk()
-        root.withdraw()
-        root.attributes("-topmost", True)
-        selected = filedialog.askdirectory(title="Choose Xpotify output folder")
-        root.destroy()
+        root = None
+        try:
+            root = tk.Tk()
+            root.withdraw()
+            root.attributes("-topmost", True)
+            selected = filedialog.askdirectory(title="Choose LynkOo output folder")
+        finally:
+            if root is not None:
+                root.destroy()
 
         if not selected:
             return FolderSelectionResponse(
@@ -76,3 +87,54 @@ def _select_output_directory_sync() -> FolderSelectionResponse:
                 f"You can still type a local folder path manually. Details: {exc}"
             ),
         )
+
+
+def _select_output_directory_macos() -> FolderSelectionResponse:
+    script = (
+        'set selectedFolder to choose folder with prompt "Choose LynkOo output folder"\n'
+        "POSIX path of selectedFolder"
+    )
+    try:
+        result = subprocess.run(
+            ["osascript", "-e", script],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+    except Exception as exc:  # pylint: disable=broad-except
+        return FolderSelectionResponse(
+            selected=False,
+            message=(
+                "Could not open the native folder picker. "
+                f"You can still type a local folder path manually. Details: {exc}"
+            ),
+        )
+
+    if result.returncode != 0:
+        stderr = result.stderr.strip()
+        if "User canceled" in stderr or "-128" in stderr:
+            return FolderSelectionResponse(
+                selected=False,
+                message="Folder selection was cancelled.",
+            )
+        return FolderSelectionResponse(
+            selected=False,
+            message=(
+                "Could not open the native folder picker. "
+                "You can still type a local folder path manually. "
+                f"Details: {stderr or 'osascript exited without selecting a folder.'}"
+            ),
+        )
+
+    selected = result.stdout.strip()
+    if not selected:
+        return FolderSelectionResponse(
+            selected=False,
+            message="Folder selection was cancelled.",
+        )
+
+    return FolderSelectionResponse(
+        selected=True,
+        path=Path(selected).expanduser(),
+        message="Output folder selected.",
+    )

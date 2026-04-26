@@ -126,7 +126,7 @@ class Singleton(type):
         self._instance = super().__call__(
             auth=auth_token,
             auth_manager=credential_manager,
-            status_forcelist=(429, 500, 502, 503, 504, 404),
+            status_forcelist=(500, 502, 503, 504, 404),
         )
 
         # Return instance

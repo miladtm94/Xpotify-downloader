@@ -429,6 +429,115 @@ wheels = [
 ]
 
 [[package]]
+name = "lynkoo"
+version = "0.1.0"
+source = { editable = "." }
+dependencies = [
+    { name = "beautifulsoup4" },
+    { name = "fastapi" },
+    { name = "mutagen" },
+    { name = "platformdirs" },
+    { name = "pydantic" },
+    { name = "pykakasi" },
+    { name = "python-slugify", extra = ["unidecode"] },
+    { name = "pytube" },
+    { name = "rapidfuzz" },
+    { name = "requests" },
+    { name = "rich" },
+    { name = "soundcloud-v2" },
+    { name = "spotipy" },
+    { name = "syncedlyrics" },
+    { name = "uvicorn" },
+    { name = "websockets" },
+    { name = "yt-dlp" },
+    { name = "ytmusicapi" },
+]
+
+[package.dev-dependencies]
+dev = [
+    { name = "black" },
+    { name = "dill" },
+    { name = "httpx" },
+    { name = "isort" },
+    { name = "mdformat-gfm" },
+    { name = "mkdocs" },
+    { name = "mkdocs-material" },
+    { name = "mypy" },
+    { name = "pyfakefs" },
+    { name = "pylint" },
+    { name = "pymdown-extensions" },
+    { name = "pytest" },
+    { name = "pytest-asyncio" },
+    { name = "pytest-cov" },
+    { name = "pytest-mock" },
+    { name = "pytest-recording" },
+    { name = "pytest-subprocess" },
+    { name = "types-deprecated" },
+    { name = "types-orjson" },
+    { name = "types-python-dateutil" },
+    { name = "types-python-slugify" },
+    { name = "types-pyyaml" },
+    { name = "types-requests" },
+    { name = "types-setuptools" },
+    { name = "types-toml" },
+    { name = "types-ujson" },
+    { name = "vcrpy" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "beautifulsoup4", specifier = ">=4.12.3,<5" },
+    { name = "fastapi", specifier = ">=0.103.0,<0.104" },
+    { name = "mutagen", specifier = ">=1.47.0,<2" },
+    { name = "platformdirs", specifier = ">=4.3.6,<5" },
+    { name = "pydantic", specifier = ">=2.9.2,<3" },
+    { name = "pykakasi", specifier = ">=2.3.0,<3" },
+    { name = "python-slugify", extras = ["unidecode"], specifier = ">=8.0.4,<9" },
+    { name = "pytube", specifier = ">=15.0.0,<16" },
+    { name = "rapidfuzz", specifier = ">=3.10.1,<4" },
+    { name = "requests", specifier = ">=2.32.3,<3" },
+    { name = "rich", specifier = ">=13.9.4,<14" },
+    { name = "soundcloud-v2", specifier = ">=1.6.0,<2" },
+    { name = "spotipy", specifier = ">=2.24.0,<3" },
+    { name = "syncedlyrics", specifier = ">=1.0.1,<2" },
+    { name = "uvicorn", specifier = ">=0.23.2,<0.24" },
+    { name = "websockets", specifier = "~=14.1" },
+    { name = "yt-dlp", specifier = ">=2025.9.26,<2027" },
+    { name = "ytmusicapi", specifier = ">=1.11.1,<2" },
+]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "black", specifier = ">=24.10.0,<25" },
+    { name = "dill", specifier = ">=0.3.7,<0.4" },
+    { name = "httpx", specifier = ">=0.24,<0.25" },
+    { name = "isort", specifier = ">=5.13.2,<6" },
+    { name = "mdformat-gfm", specifier = ">=0.3.5,<0.4" },
+    { name = "mkdocs", specifier = ">=1.6.1,<2" },
+    { name = "mkdocs-material", specifier = ">=9.5.44,<10" },
+    { name = "mypy", specifier = ">=1.13.0,<2" },
+    { name = "pyfakefs", specifier = ">=5.7.1,<6" },
+    { name = "pylint", specifier = ">=3.3.1,<4" },
+    { name = "pymdown-extensions", specifier = "~=10.12" },
+    { name = "pytest", specifier = ">=8.3.3,<9" },
+    { name = "pytest-asyncio", specifier = ">=0.21.1,<0.22" },
+    { name = "pytest-cov", specifier = ">=6.0.0,<7" },
+    { name = "pytest-mock", specifier = ">=3.14.0,<4" },
+    { name = "pytest-recording", specifier = ">=0.13.1,<0.14" },
+    { name = "pytest-subprocess", specifier = ">=1.5.2,<2" },
+    { name = "types-deprecated", specifier = ">=1.2.15.20250304" },
+    { name = "types-orjson", specifier = ">=3.6.2,<4" },
+    { name = "types-python-dateutil", specifier = ">=2.9.0.20250809" },
+    { name = "types-python-slugify", specifier = ">=8.0.2.20240310,<9" },
+    { name = "types-pyyaml", specifier = ">=6.0.12.20250809" },
+    { name = "types-requests", specifier = "==2.31.0.6" },
+    { name = "types-setuptools", specifier = ">=75.5.0.20241116,<76" },
+    { name = "types-toml", specifier = ">=0.10.8.7,<0.11" },
+    { name = "types-ujson", specifier = ">=5.10.0.20240515,<6" },
+    { name = "vcrpy", specifier = ">=6.0.2,<7" },
+]
+
+[[package]]
 name = "markdown"
 version = "3.7"
 source = { registry = "https://pypi.org/simple" }
@@ -1874,115 +1983,6 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/6a/e1/0122853035b40b3f333bbb25f1939fc1045e21dd518f7f0922b60c156f7c/wrapt-1.17.2-cp313-cp313t-win32.whl", hash = "sha256:13e6afb7fe71fe7485a4550a8844cc9ffbe263c0f1a1eea569bc7091d4898555", size = 37986, upload-time = "2025-01-14T10:35:00.498Z" },
     { url = "https://files.pythonhosted.org/packages/09/5e/1655cf481e079c1f22d0cabdd4e51733679932718dc23bf2db175f329b76/wrapt-1.17.2-cp313-cp313t-win_amd64.whl", hash = "sha256:eaf675418ed6b3b31c7a989fd007fa7c3be66ce14e5c3b27336383604c9da85c", size = 40750, upload-time = "2025-01-14T10:35:03.378Z" },
     { url = "https://files.pythonhosted.org/packages/2d/82/f56956041adef78f849db6b289b282e72b55ab8045a75abad81898c28d19/wrapt-1.17.2-py3-none-any.whl", hash = "sha256:b18f2d1533a71f069c7f82d524a52599053d4c7166e9dd374ae2136b7f40f7c8", size = 23594, upload-time = "2025-01-14T10:35:44.018Z" },
-]
-
-[[package]]
-name = "xpotify-downloader"
-version = "0.1.0"
-source = { editable = "." }
-dependencies = [
-    { name = "beautifulsoup4" },
-    { name = "fastapi" },
-    { name = "mutagen" },
-    { name = "platformdirs" },
-    { name = "pydantic" },
-    { name = "pykakasi" },
-    { name = "python-slugify", extra = ["unidecode"] },
-    { name = "pytube" },
-    { name = "rapidfuzz" },
-    { name = "requests" },
-    { name = "rich" },
-    { name = "soundcloud-v2" },
-    { name = "spotipy" },
-    { name = "syncedlyrics" },
-    { name = "uvicorn" },
-    { name = "websockets" },
-    { name = "yt-dlp" },
-    { name = "ytmusicapi" },
-]
-
-[package.dev-dependencies]
-dev = [
-    { name = "black" },
-    { name = "dill" },
-    { name = "httpx" },
-    { name = "isort" },
-    { name = "mdformat-gfm" },
-    { name = "mkdocs" },
-    { name = "mkdocs-material" },
-    { name = "mypy" },
-    { name = "pyfakefs" },
-    { name = "pylint" },
-    { name = "pymdown-extensions" },
-    { name = "pytest" },
-    { name = "pytest-asyncio" },
-    { name = "pytest-cov" },
-    { name = "pytest-mock" },
-    { name = "pytest-recording" },
-    { name = "pytest-subprocess" },
-    { name = "types-deprecated" },
-    { name = "types-orjson" },
-    { name = "types-python-dateutil" },
-    { name = "types-python-slugify" },
-    { name = "types-pyyaml" },
-    { name = "types-requests" },
-    { name = "types-setuptools" },
-    { name = "types-toml" },
-    { name = "types-ujson" },
-    { name = "vcrpy" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "beautifulsoup4", specifier = ">=4.12.3,<5" },
-    { name = "fastapi", specifier = ">=0.103.0,<0.104" },
-    { name = "mutagen", specifier = ">=1.47.0,<2" },
-    { name = "platformdirs", specifier = ">=4.3.6,<5" },
-    { name = "pydantic", specifier = ">=2.9.2,<3" },
-    { name = "pykakasi", specifier = ">=2.3.0,<3" },
-    { name = "python-slugify", extras = ["unidecode"], specifier = ">=8.0.4,<9" },
-    { name = "pytube", specifier = ">=15.0.0,<16" },
-    { name = "rapidfuzz", specifier = ">=3.10.1,<4" },
-    { name = "requests", specifier = ">=2.32.3,<3" },
-    { name = "rich", specifier = ">=13.9.4,<14" },
-    { name = "soundcloud-v2", specifier = ">=1.6.0,<2" },
-    { name = "spotipy", specifier = ">=2.24.0,<3" },
-    { name = "syncedlyrics", specifier = ">=1.0.1,<2" },
-    { name = "uvicorn", specifier = ">=0.23.2,<0.24" },
-    { name = "websockets", specifier = "~=14.1" },
-    { name = "yt-dlp", specifier = ">=2025.9.26,<2027" },
-    { name = "ytmusicapi", specifier = ">=1.11.1,<2" },
-]
-
-[package.metadata.requires-dev]
-dev = [
-    { name = "black", specifier = ">=24.10.0,<25" },
-    { name = "dill", specifier = ">=0.3.7,<0.4" },
-    { name = "httpx", specifier = ">=0.24,<0.25" },
-    { name = "isort", specifier = ">=5.13.2,<6" },
-    { name = "mdformat-gfm", specifier = ">=0.3.5,<0.4" },
-    { name = "mkdocs", specifier = ">=1.6.1,<2" },
-    { name = "mkdocs-material", specifier = ">=9.5.44,<10" },
-    { name = "mypy", specifier = ">=1.13.0,<2" },
-    { name = "pyfakefs", specifier = ">=5.7.1,<6" },
-    { name = "pylint", specifier = ">=3.3.1,<4" },
-    { name = "pymdown-extensions", specifier = "~=10.12" },
-    { name = "pytest", specifier = ">=8.3.3,<9" },
-    { name = "pytest-asyncio", specifier = ">=0.21.1,<0.22" },
-    { name = "pytest-cov", specifier = ">=6.0.0,<7" },
-    { name = "pytest-mock", specifier = ">=3.14.0,<4" },
-    { name = "pytest-recording", specifier = ">=0.13.1,<0.14" },
-    { name = "pytest-subprocess", specifier = ">=1.5.2,<2" },
-    { name = "types-deprecated", specifier = ">=1.2.15.20250304" },
-    { name = "types-orjson", specifier = ">=3.6.2,<4" },
-    { name = "types-python-dateutil", specifier = ">=2.9.0.20250809" },
-    { name = "types-python-slugify", specifier = ">=8.0.2.20240310,<9" },
-    { name = "types-pyyaml", specifier = ">=6.0.12.20250809" },
-    { name = "types-requests", specifier = "==2.31.0.6" },
-    { name = "types-setuptools", specifier = ">=75.5.0.20241116,<76" },
-    { name = "types-toml", specifier = ">=0.10.8.7,<0.11" },
-    { name = "types-ujson", specifier = ">=5.10.0.20240515,<6" },
-    { name = "vcrpy", specifier = ">=6.0.2,<7" },
 ]
 
 [[package]]

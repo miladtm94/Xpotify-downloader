@@ -69,7 +69,7 @@ def dependency_statuses() -> List[DependencyStatus]:
 def health() -> HealthResponse:
     return HealthResponse(
         status="ok",
-        app="Xpotify Local Media Manager",
+        app="LynkOo",
         python_version=sys.version.split()[0],
         platform=platform.platform(),
     )
@@ -85,4 +85,3 @@ def providers(
     manager: DownloadManager = Depends(get_download_manager),
 ) -> List[ProviderCapability]:
     return manager.capabilities()
-

@@ -13,6 +13,7 @@ from app.backend.models.download_job import (
     JobState,
 )
 from app.backend.models.download_result import (
+    MediaMetadata,
     ProviderCapability,
     StructuredError,
     ValidationResult,
@@ -29,6 +30,7 @@ from app.backend.services.job_queue import JobQueue
 from app.backend.services.metadata_service import MetadataService
 
 logger = logging.getLogger(__name__)
+DEFAULT_MAX_CONCURRENT_DOWNLOADS = 4
 
 
 class DownloadManager:
@@ -42,7 +44,7 @@ class DownloadManager:
         self.settings = settings or AppSettings()
         self.providers = list(providers) if providers is not None else self._default_providers()
         self.jobs: Dict[str, DownloadJob] = {}
-        self.queue = JobQueue(self.settings.max_concurrent_downloads)
+        self.queue = JobQueue(DEFAULT_MAX_CONCURRENT_DOWNLOADS)
         self.metadata_service = MetadataService()
         self._subscribers: List[asyncio.Queue[DownloadJob]] = []
         self._publish_loop: Optional[asyncio.AbstractEventLoop] = None
@@ -56,7 +58,7 @@ class DownloadManager:
 
     def update_settings(self, settings: AppSettings) -> None:
         self.settings = settings
-        self.queue = JobQueue(settings.max_concurrent_downloads)
+        self.queue = JobQueue(DEFAULT_MAX_CONCURRENT_DOWNLOADS)
         self.providers = self._default_providers()
 
     def capabilities(self) -> List[ProviderCapability]:
@@ -76,13 +78,22 @@ class DownloadManager:
         if provider is None:
             return ValidationResult(
                 ok=False,
-                message="Unsupported link. Try a Spotify URL or a direct public media file URL.",
+                message=(
+                    "Unsupported link. Try a Spotify URL, a direct public media file URL, "
+                    "or a yt-dlp-supported public video page."
+                ),
                 error=StructuredError(
                     code="unsupported_source",
                     message="No provider can handle this URL.",
                 ),
             )
         return await provider.validate(url)
+
+    async def inspect_url(self, url: str) -> MediaMetadata:
+        provider = self.detect_provider(url)
+        if provider is None:
+            raise ProviderError("unsupported_source", "No provider can handle this URL.")
+        return self.metadata_service.normalize(await provider.get_metadata(url))
 
     async def create_job(self, url: str, options: Optional[DownloadOptions] = None) -> DownloadJob:
         provider = self.detect_provider(url)
@@ -146,6 +157,9 @@ class DownloadManager:
             job.transition(JobState.VALIDATING, "Validating URL")
             await self._publish(job)
             validation = await provider.validate(job.url)
+            if validation.metadata is not None:
+                job.metadata = self.metadata_service.normalize(validation.metadata)
+                await self._publish(job)
             if not validation.ok:
                 error = validation.error or StructuredError(
                     code="validation_failed",

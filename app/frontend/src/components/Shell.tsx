@@ -1,10 +1,9 @@
 import type { ReactNode } from "react";
 
 const NAV_ITEMS = [
-  { id: "download", label: "Download" },
+  { id: "download", label: "Dashboard" },
   { id: "queue", label: "Queue" },
   { id: "library", label: "Library" },
-  { id: "settings", label: "Settings" },
   { id: "about", label: "About" },
 ] as const;
 
@@ -19,9 +18,9 @@ type ShellProps = {
 export function Shell({ currentPage, onNavigate, children }: ShellProps) {
   return (
     <div className="mx-auto flex min-h-screen max-w-7xl flex-col px-4 py-6 sm:px-6 lg:px-8">
-      <header className="mb-6 flex flex-col gap-4 rounded-[2rem] border border-ink/10 bg-ink px-5 py-5 text-paper shadow-panel md:flex-row md:items-center md:justify-between">
+      <header className="mb-6 flex flex-col gap-4 rounded-[1.25rem] border border-ink/10 bg-ink px-5 py-5 text-paper shadow-panel md:flex-row md:items-center md:justify-between">
         <div>
-          <p className="text-xs uppercase tracking-[0.45em] text-brass">Xpotify</p>
+          <p className="text-xs uppercase text-brass">LynkOo</p>
           <h1 className="display-font mt-1 text-3xl font-semibold md:text-4xl">
             Local Media Manager
           </h1>
@@ -47,4 +46,3 @@ export function Shell({ currentPage, onNavigate, children }: ShellProps) {
     </div>
   );
 }
-

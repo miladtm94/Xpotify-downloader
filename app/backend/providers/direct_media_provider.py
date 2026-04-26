@@ -125,6 +125,7 @@ class DirectMediaProvider(DownloadProvider):
             metadata.title or "download",
             extension,
             job.options.output_directory,
+            job.options.output_subfolder,
         )
 
         try:
@@ -167,4 +168,3 @@ class DirectMediaProvider(DownloadProvider):
                     message=f"Direct media download failed: {exc}",
                 ),
             )
-

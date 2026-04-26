@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import os
 from pathlib import Path
 from typing import List, Optional
 
@@ -18,15 +19,17 @@ class AppSettings(BaseModel):
     model_config = ConfigDict(validate_assignment=True)
 
     output_directory: Path = Field(
-        default_factory=lambda: Path.home() / "Music" / "Xpotify"
+        default_factory=lambda: Path(
+            os.environ.get(
+                "LYNKOO_OUTPUT_DIR",
+                os.environ.get("XPOTIFY_OUTPUT_DIR", Path.home() / "Music" / "LynkOo"),
+            )
+        )
     )
     default_audio_format: str = "mp3"
     default_video_format: str = "mp4"
     default_quality: str = "best"
-    max_concurrent_downloads: int = Field(default=2, ge=1, le=8)
     theme: str = "system"
-    spotify_client_id: Optional[str] = None
-    spotify_client_secret: Optional[str] = None
 
     @field_validator("output_directory", mode="before")
     @classmethod
@@ -81,4 +84,3 @@ class SettingsResponse(BaseModel):
 
     settings: AppSettings
     dependencies: List[DependencyStatus]
-

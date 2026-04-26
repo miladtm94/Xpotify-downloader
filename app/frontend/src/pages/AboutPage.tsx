@@ -13,7 +13,7 @@ export function AboutPage({ providers }: AboutPageProps) {
         <h2 className="display-font mt-2 text-4xl font-semibold">A local-first media workbench.</h2>
         <div className="mt-5 max-w-3xl space-y-3 text-ink/70">
           <p>
-            Xpotify is a local media manager built on top of the open-source spotDL project.
+            LynkOo is a local media manager built on top of the open-source spotDL project.
             It preserves spotDL's Spotify metadata and audio matching workflow while adding
             a modular provider layer and a modern local UI.
           </p>
@@ -28,8 +28,22 @@ export function AboutPage({ providers }: AboutPageProps) {
           </p>
         </div>
       </div>
+      <div className="glass-panel rounded-[1.5rem] p-6">
+        <p className="text-xs uppercase text-tide">Support</p>
+        <h3 className="mt-2 text-2xl font-semibold">Help keep LynkOo moving.</h3>
+        <p className="mt-3 max-w-2xl text-ink/70">
+          Donations support maintenance, packaging, and extractor updates.
+        </p>
+        <a
+          className="mt-5 inline-flex rounded-full bg-ink px-5 py-3 text-sm font-semibold text-paper transition hover:bg-ink/85"
+          href="https://github.com/sponsors/miladtm94"
+          rel="noreferrer"
+          target="_blank"
+        >
+          Sponsor on GitHub
+        </a>
+      </div>
       <CapabilityMatrix providers={providers} />
     </section>
   );
 }
-

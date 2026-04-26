@@ -1,4 +1,5 @@
 import { JobCard } from "../components/JobCard";
+import { openDownloadFolder } from "../lib/api";
 import type { DownloadJob } from "../lib/types";
 
 type LibraryPageProps = {
@@ -7,7 +8,10 @@ type LibraryPageProps = {
 
 export function LibraryPage({ jobs }: LibraryPageProps) {
   const completedJobs = jobs.filter((job) => job.state === "completed");
-  const failedJobs = jobs.filter((job) => job.state === "failed" || job.state === "cancelled");
+
+  async function handleOpenFolder(jobId: string) {
+    await openDownloadFolder(jobId);
+  }
 
   return (
     <section className="space-y-5">
@@ -15,30 +19,17 @@ export function LibraryPage({ jobs }: LibraryPageProps) {
         <p className="text-xs uppercase tracking-[0.35em] text-brass">Library</p>
         <h2 className="display-font mt-2 text-4xl font-semibold">Completed downloads</h2>
         <p className="mt-3 text-ink/65">
-          Browser mode can show file paths. Native open-file/open-folder actions are reserved for a future desktop wrapper.
+          Finished downloads appear here. Open folder jumps to the saved album, playlist, or file location.
         </p>
       </div>
       {completedJobs.map((job) => (
-        <JobCard job={job} key={job.id} />
+        <JobCard job={job} key={job.id} onOpenFolder={handleOpenFolder} />
       ))}
       {!completedJobs.length ? (
         <div className="glass-panel rounded-[2rem] p-8 text-ink/65">
           Completed downloads will appear here.
         </div>
       ) : null}
-      {failedJobs.length ? (
-        <div className="glass-panel rounded-[2rem] p-6">
-          <h3 className="text-lg font-semibold">Recent failures</h3>
-          <div className="mt-4 space-y-3">
-            {failedJobs.slice(0, 5).map((job) => (
-              <p className="rounded-2xl bg-clay/10 px-4 py-3 text-sm text-clay" key={job.id}>
-                {job.error?.message ?? job.status_message}
-              </p>
-            ))}
-          </div>
-        </div>
-      ) : null}
     </section>
   );
 }
-

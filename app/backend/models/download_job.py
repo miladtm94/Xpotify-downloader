@@ -37,6 +37,7 @@ class DownloadOptions(BaseModel):
     """Per-job options selected by the user."""
 
     output_directory: Optional[Path] = None
+    output_subfolder: Optional[str] = None
     media_mode: str = "auto"
     format: Optional[str] = None
     quality: Optional[str] = None
@@ -48,6 +49,19 @@ class DownloadOptions(BaseModel):
         if value in (None, ""):
             return None
         return Path(value).expanduser()
+
+    @field_validator("output_subfolder", mode="before")
+    @classmethod
+    def normalize_output_subfolder(cls, value: object) -> Optional[str]:
+        if value in (None, ""):
+            return None
+        subfolder = str(value).strip().strip("/\\")
+        if not subfolder:
+            return None
+        path = Path(subfolder)
+        if path.is_absolute() or any(part in {"..", "."} for part in path.parts):
+            raise ValueError("Output subfolder must be a relative folder name.")
+        return subfolder
 
     @field_validator("media_mode")
     @classmethod
@@ -93,4 +107,3 @@ class DownloadJob(BaseModel):
         self.updated_at = datetime.utcnow()
         if message:
             self.status_message = message
-

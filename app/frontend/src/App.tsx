@@ -14,7 +14,6 @@ import { AboutPage } from "./pages/AboutPage";
 import { DownloadPage } from "./pages/DownloadPage";
 import { LibraryPage } from "./pages/LibraryPage";
 import { QueuePage } from "./pages/QueuePage";
-import { SettingsPage } from "./pages/SettingsPage";
 
 function mergeJob(jobs: DownloadJob[], nextJob: DownloadJob): DownloadJob[] {
   const existing = jobs.findIndex((job) => job.id === nextJob.id);
@@ -83,9 +82,6 @@ export default function App() {
         <QueuePage jobs={jobs} onCancel={handleCancel} onRetry={handleRetry} />
       ) : null}
       {page === "library" ? <LibraryPage jobs={jobs} /> : null}
-      {page === "settings" ? (
-        <SettingsPage settings={settings} onSettingsChange={setSettings} />
-      ) : null}
       {page === "about" ? <AboutPage providers={providers} /> : null}
     </Shell>
   );

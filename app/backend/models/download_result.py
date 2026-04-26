@@ -30,18 +30,6 @@ class ProviderCapability(BaseModel):
     limitations: List[str] = Field(default_factory=list)
 
 
-class ValidationResult(BaseModel):
-    """Result returned when a provider validates a URL."""
-
-    ok: bool
-    provider: Optional[str] = None
-    source_type: Optional[str] = None
-    message: str
-    supported_formats: List[str] = Field(default_factory=list)
-    supported_qualities: List[str] = Field(default_factory=list)
-    error: Optional[StructuredError] = None
-
-
 class MediaMetadata(BaseModel):
     """Provider-neutral media metadata."""
 
@@ -56,6 +44,19 @@ class MediaMetadata(BaseModel):
     raw: Dict[str, Any] = Field(default_factory=dict)
 
 
+class ValidationResult(BaseModel):
+    """Result returned when a provider validates a URL."""
+
+    ok: bool
+    provider: Optional[str] = None
+    source_type: Optional[str] = None
+    message: str
+    supported_formats: List[str] = Field(default_factory=list)
+    supported_qualities: List[str] = Field(default_factory=list)
+    metadata: Optional[MediaMetadata] = None
+    error: Optional[StructuredError] = None
+
+
 class DownloadResult(BaseModel):
     """Final result for a completed or failed download."""
 
@@ -64,4 +65,3 @@ class DownloadResult(BaseModel):
     file_path: Optional[Path] = None
     metadata: Optional[MediaMetadata] = None
     error: Optional[StructuredError] = None
-

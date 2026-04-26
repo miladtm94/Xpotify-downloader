@@ -102,33 +102,20 @@ export function SettingsPage({ settings, onSettingsChange }: SettingsPageProps) 
               </select>
             </label>
           </div>
-          <div className="grid gap-4 md:grid-cols-2">
-            <label>
-              <span className="mb-2 block text-sm font-semibold">Quality</span>
-              <select
-                className="field"
-                onChange={(event) => setDraft({ ...draft, default_quality: event.target.value })}
-                value={draft.default_quality}
-              >
-                {["best", "high", "medium", "low"].map((item) => (
-                  <option key={item} value={item}>
-                    {item}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label>
-              <span className="mb-2 block text-sm font-semibold">Max concurrent downloads</span>
-              <input
-                className="field"
-                max={8}
-                min={1}
-                onChange={(event) => setDraft({ ...draft, max_concurrent_downloads: Number(event.target.value) })}
-                type="number"
-                value={draft.max_concurrent_downloads}
-              />
-            </label>
-          </div>
+          <label>
+            <span className="mb-2 block text-sm font-semibold">Quality</span>
+            <select
+              className="field"
+              onChange={(event) => setDraft({ ...draft, default_quality: event.target.value })}
+              value={draft.default_quality}
+            >
+              {["best", "high", "medium", "low"].map((item) => (
+                <option key={item} value={item}>
+                  {item}
+                </option>
+              ))}
+            </select>
+          </label>
           <label>
             <span className="mb-2 block text-sm font-semibold">Theme</span>
             <select

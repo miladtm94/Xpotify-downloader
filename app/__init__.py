@@ -1,2 +1,1 @@
-"""Xpotify local media manager application package."""
-
+"""LynkOo local media manager application package."""
