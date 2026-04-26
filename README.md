@@ -146,5 +146,4 @@ LynkOo is released under the MIT License. See [LICENSE](LICENSE).
 ## Attribution
 
 LynkOo is derived from and preserves substantial functionality from
-[spotDL](https://github.com/spotDL/spotify-downloader), licensed under the MIT
-License.
+[spotDL](https://github.com/spotDL/spotify-downloader).
